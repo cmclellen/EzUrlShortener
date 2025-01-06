@@ -1,6 +1,6 @@
 @Ez.UrlShortener.Api_HostAddress = http://localhost:5267
 
-GET {{Ez.UrlShortener.Api_HostAddress}}/weatherforecast/
+GET {{Ez.UrlShortener.Api_HostAddress}}/api/v1/weatherforecast/
 Accept: application/json
 
 ###
