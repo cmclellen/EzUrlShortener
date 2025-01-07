@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ez.UrlShortener.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,6 +23,12 @@ namespace Ez.UrlShortener.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_ShortenedUrls", x => x.ShortCode);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShortenedUrls_ShortCode",
+                table: "ShortenedUrls",
+                column: "ShortCode",
+                unique: true);
         }
 
         /// <inheritdoc />

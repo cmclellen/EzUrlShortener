@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ez.UrlShortener.Persistence.Migrations
 {
     [DbContext(typeof(UrlShortenerDbContext))]
-    [Migration("20250107090239_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250107093525_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,9 @@ namespace Ez.UrlShortener.Persistence.Migrations
                         .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("ShortCode");
+
+                    b.HasIndex("ShortCode")
+                        .IsUnique();
 
                     b.ToTable("ShortenedUrls");
                 });

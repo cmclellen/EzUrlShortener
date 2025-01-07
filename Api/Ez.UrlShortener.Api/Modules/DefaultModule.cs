@@ -1,6 +1,7 @@
 ﻿using Carter;
 using Ez.UrlShortener.Application.Commands;
 using Ez.UrlShortener.Application.Queries;
+using Ez.UrlShortener.Domain.Entities;
 using MediatR;
 using System.Net;
 
@@ -41,17 +42,18 @@ namespace Ez.UrlShortener.Api.Modules
 
         private async Task<IResult> GetOriginalUrl(string shortCode, ISender sender)
         {
-            var originalUrl = await sender.Send(new GetOriginalUrlQuery(shortCode));
-            if(originalUrl is null)
+            ShortenedUrl? shortenedUrl = await sender.Send(new GetOriginalUrlQuery(shortCode));
+            if(shortenedUrl is null)
             {
                 return Results.NotFound();
             }
-            return Results.Redirect(originalUrl);
+            return Results.Redirect(shortenedUrl.OriginalUrl);
         }
 
         private async Task<string[]> GetAllUrls(ISender sender)
         {
-            return await sender.Send(new GetAllUrlsQuery());
+            var shortenedUrls= await sender.Send(new GetAllUrlsQuery());
+            return shortenedUrls.Select(item=>item.OriginalUrl).ToArray();
         }
     }
 }

@@ -1,7 +1,6 @@
 using Ez.UrlShortener.Api.Extensions;
 using Ez.UrlShortener.Application.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 

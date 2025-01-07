@@ -40,6 +40,9 @@ namespace Ez.UrlShortener.Persistence.Migrations
 
                     b.HasKey("ShortCode");
 
+                    b.HasIndex("ShortCode")
+                        .IsUnique();
+
                     b.ToTable("ShortenedUrls");
                 });
 #pragma warning restore 612, 618

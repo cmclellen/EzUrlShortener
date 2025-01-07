@@ -10,6 +10,7 @@ namespace Ez.UrlShortener.Application.EntityTypeConfigurations
         {
             builder.HasKey(c => c.ShortCode);
             builder.Property(c => c.ShortCode).HasMaxLength(8);
+            builder.HasIndex(c=>c.ShortCode).IsUnique();
             builder.Property(c => c.OriginalUrl).HasMaxLength(2048);
             builder.Property(c => c.CreatedAtUtc).HasDefaultValueSql("getutcdate()");
         }
