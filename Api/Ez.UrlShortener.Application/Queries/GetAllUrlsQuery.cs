@@ -2,13 +2,13 @@
 
 namespace Ez.UrlShortener.Application.Queries
 {
-    public record GetAllUrlsQuery : IRequest<IList<string>>;
+    public record GetAllUrlsQuery : IRequest<string[]>;
 
-    public class GetAllUrlsQueryHandler : IRequestHandler<GetAllUrlsQuery, IList<string>>
+    public class GetAllUrlsQueryHandler : IRequestHandler<GetAllUrlsQuery, string[]>
     {
-        public Task<IList<string>> Handle(GetAllUrlsQuery request, CancellationToken cancellationToken)
+        public Task<string[]> Handle(GetAllUrlsQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new [] { "ff", "dd" });
         }
     }
 }

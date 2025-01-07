@@ -2,13 +2,18 @@
 
 namespace Ez.UrlShortener.Application.Commands
 {
-    public record ShortenUrlCommand : IRequest;
+    public record ShortenUrlCommand(string urlToShorten) : IRequest<string>;
 
-    public class ShortenUrlCommandHandler : IRequestHandler<ShortenUrlCommand>
+    public class ShortenUrlCommandHandler : IRequestHandler<ShortenUrlCommand, string>
     {
-        public Task Handle(ShortenUrlCommand request, CancellationToken cancellationToken)
+        public Task<string> Handle(ShortenUrlCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if(!Uri.TryCreate(request.urlToShorten, UriKind.Absolute, out _))
+            {
+                throw new Exception("Invalid ULR format");
+            }
+            
+            return Task.FromResult("abc");
         }
     }
 }
