@@ -1,54 +1,59 @@
 ﻿using Carter;
-using Microsoft.AspNetCore.Mvc;
+using Ez.UrlShortener.Application.Commands;
+using Ez.UrlShortener.Application.Queries;
+using Ez.UrlShortener.Domain.Entities;
+using MediatR;
+using System.Net;
 
 namespace Ez.UrlShortener.Api.Modules
 {
-    public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-    {
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-    }
-
-
     public class DefaultModule : CarterModule
     {
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/weatherforecast", GetWeatherForecast)
+            app.MapPost("shorten", ShortenUrl)
                 .MapToApiVersion(1)
-                .WithName("GetWeatherForecast");
+                .WithName("ShortenUrl")
+                .WithDescription("Shortens a URL that has been provided as input")
+                .WithSummary("Shortens a URL that has been provided as input")
+                .Produces((int)HttpStatusCode.OK, typeof(string));
+
+            app.MapGet("{shortCode}", GetOriginalUrl)
+                .MapToApiVersion(1)
+                .WithName("GetOriginalUrlForShortCode")
+                .WithDescription("Get the original URL for the short code")
+                .WithSummary("Get the original URL for the short code")
+                .Produces(((int)HttpStatusCode.Redirect), typeof(string));
+
+            app.MapGet("urls", GetAllUrls)
+                .MapToApiVersion(1)
+                .WithName("GetAllUrls")
+                .WithDescription("Gets all URL's")
+                .WithSummary("Gets all URL's")
+                .Produces(((int)HttpStatusCode.OK), typeof(string));
         }
 
-        /// <summary>
-        /// Gets weather forecast.
-        /// </summary>
-        /// <returns>The weather forecast</returns>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     GET /api/v1/weatherforecast
-        ///
-        /// </remarks>
-        /// <response code="200">Returns the weather forecast</response>
-        /// <response code="500">An unexpected error has occurred</response>
-        [ApiConventionMethod(typeof(DefaultApiConventions),
-                     nameof(DefaultApiConventions.Get))]
-        [Produces("application/json")]
-        private WeatherForecast[] GetWeatherForecast()
-        {
-            var summaries = new[]
-            {
-                "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-            };
+        //https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/include-metadata?view=aspnetcore-9.0&tabs=minimal-apis
 
-            var forecast = Enumerable.Range(1, 5).Select(index =>
-                    new WeatherForecast
-                    (
-                        DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                        Random.Shared.Next(-20, 55),
-                        summaries[Random.Shared.Next(summaries.Length)]
-                    ))
-                    .ToArray();
-            return forecast;
+        private async Task<string> ShortenUrl(string url, ISender sender)
+        {
+            return await sender.Send(new ShortenUrlCommand(url));
+        }
+
+        private async Task<IResult> GetOriginalUrl(string shortCode, ISender sender)
+        {
+            ShortenedUrl? shortenedUrl = await sender.Send(new GetOriginalUrlQuery(shortCode));
+            if(shortenedUrl is null)
+            {
+                return Results.NotFound();
+            }
+            return Results.Redirect(shortenedUrl.OriginalUrl);
+        }
+
+        private async Task<string[]> GetAllUrls(ISender sender)
+        {
+            var shortenedUrls= await sender.Send(new GetAllUrlsQuery());
+            return shortenedUrls.Select(item=>item.OriginalUrl).ToArray();
         }
     }
 }

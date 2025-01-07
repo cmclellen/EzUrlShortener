@@ -1,14 +1,16 @@
-﻿using MediatR;
+﻿using Ez.UrlShortener.Domain.Entities;
+using Ez.UrlShortener.Domain.Repositories;
+using MediatR;
 
 namespace Ez.UrlShortener.Application.Queries
 {
-    public record GetOriginalUrlQuery:IRequest<string>;
+    public record GetOriginalUrlQuery(string shortCode):IRequest<ShortenedUrl?>;
 
-    public class GetOriginalUrlQueryHandler : IRequestHandler<GetOriginalUrlQuery, string>
+    public class GetOriginalUrlQueryHandler(IShortenedUrlRepository shortenedUrlRepository) : IRequestHandler<GetOriginalUrlQuery, ShortenedUrl?>
     {
-        public Task<string> Handle(GetOriginalUrlQuery request, CancellationToken cancellationToken)
+        public async Task<ShortenedUrl?> Handle(GetOriginalUrlQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await shortenedUrlRepository.GetByShortCodeAsync(request.shortCode);
         }
     }
 }

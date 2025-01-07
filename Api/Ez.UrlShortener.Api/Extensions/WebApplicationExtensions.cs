@@ -16,5 +16,15 @@ namespace Ez.UrlShortener.Api.Extensions
             apiMapGroup.MapCarter();
             return app;
         }
+    
+
+        public static WebApplication UseGlobalExceptionHandler(this WebApplication app)
+        {
+            //app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+            app.UseExceptionHandler();
+            app.UseStatusCodePages();
+            return app;
+        }
     }
 }
+
