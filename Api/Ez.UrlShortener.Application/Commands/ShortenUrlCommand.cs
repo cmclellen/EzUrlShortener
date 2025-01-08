@@ -12,10 +12,11 @@ namespace Ez.UrlShortener.Application.Commands
     public class ShortenUrlCommandHandler(
         ILogger<ShortenUrlCommandHandler> logger, 
         HybridCache hybridCache,
-        IShortenedUrlRepository shortenedUrlRepository, IUnitOfWork unitOfWork) : IRequestHandler<ShortenUrlCommand, string>
+        IShortenedUrlRepository shortenedUrlRepository, 
+        IUnitOfWork unitOfWork) : IRequestHandler<ShortenUrlCommand, string>
     {
         private const int MaxRetries = 3;
-
+                
         private string GenerateShortCode()
         {
             const int length = 7;

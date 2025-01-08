@@ -52,9 +52,11 @@ public static class Extensions
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
             {
+                const string METER_NAME = "UrlShortener.Api";
                 metrics.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddRuntimeInstrumentation();
+                    .AddRuntimeInstrumentation()
+                    .AddMeter(METER_NAME);
             })
             .WithTracing(tracing =>
             {
