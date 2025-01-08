@@ -12,10 +12,18 @@ var db = sqlServer.AddDatabase("url-shortener-db", "UrlShortener");
 
 var redis = builder.AddRedis("redis");
 
-builder.AddProject<Projects.Ez_UrlShortener_Api>("ez-urlshortener-api")
+var urlShortnerUrl = builder.AddProject<Projects.Ez_UrlShortener_Api>("ez-urlshortener-api")
     .WithReference(db)
     .WaitFor(db)
     .WithReference(redis)
     .WaitFor(redis);
+
+builder.AddNpmApp("react", "../../UI", "dev")
+    .WithReference(urlShortnerUrl)
+    .WaitFor(urlShortnerUrl)    
+    .WithEnvironment("BROWSER", "none") // Disable opening browser on npm start
+    .WithHttpEndpoint(env: "PORT")
+    .WithExternalHttpEndpoints()
+    .PublishAsDockerFile();
 
 builder.Build().Run();
