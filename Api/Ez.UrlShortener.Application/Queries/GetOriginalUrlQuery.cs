@@ -16,7 +16,6 @@ namespace Ez.UrlShortener.Application.Queries
         private static readonly Counter<int> RedirectsCounter = Meter.CreateCounter<int>("url_shortener.redirects", "Number of redirects");
         private static readonly Counter<int> FailedRedirectsCounter = Meter.CreateCounter<int>("url_shortener.failed_redirects", "Number of failed redirects");
 
-
         public async Task<string?> Handle(GetOriginalUrlQuery request, CancellationToken cancellationToken)
         {
             var originalUrl = await hybridCache.GetOrCreateAsync(request.shortCode, async token =>
