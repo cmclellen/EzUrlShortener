@@ -42,12 +42,12 @@ namespace Ez.UrlShortener.Api.Modules
 
         private async Task<IResult> GetOriginalUrl(string shortCode, ISender sender)
         {
-            ShortenedUrl? shortenedUrl = await sender.Send(new GetOriginalUrlQuery(shortCode));
-            if(shortenedUrl is null)
+            string? originalUrl = await sender.Send(new GetOriginalUrlQuery(shortCode));
+            if(originalUrl is null)
             {
                 return Results.NotFound();
             }
-            return Results.Redirect(shortenedUrl.OriginalUrl);
+            return Results.Redirect(originalUrl);
         }
 
         private async Task<string[]> GetAllUrls(ISender sender)

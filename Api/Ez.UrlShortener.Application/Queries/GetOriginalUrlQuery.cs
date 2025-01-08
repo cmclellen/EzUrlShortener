@@ -1,16 +1,23 @@
-﻿using Ez.UrlShortener.Domain.Entities;
-using Ez.UrlShortener.Domain.Repositories;
+﻿using Ez.UrlShortener.Domain.Repositories;
 using MediatR;
+using Microsoft.Extensions.Caching.Hybrid;
 
 namespace Ez.UrlShortener.Application.Queries
 {
-    public record GetOriginalUrlQuery(string shortCode):IRequest<ShortenedUrl?>;
+    public record GetOriginalUrlQuery(string shortCode):IRequest<string?>;
 
-    public class GetOriginalUrlQueryHandler(IShortenedUrlRepository shortenedUrlRepository) : IRequestHandler<GetOriginalUrlQuery, ShortenedUrl?>
+    public class GetOriginalUrlQueryHandler(
+        HybridCache hybridCache,
+        IShortenedUrlRepository shortenedUrlRepository) : IRequestHandler<GetOriginalUrlQuery, string?>
     {
-        public async Task<ShortenedUrl?> Handle(GetOriginalUrlQuery request, CancellationToken cancellationToken)
+        public async Task<string?> Handle(GetOriginalUrlQuery request, CancellationToken cancellationToken)
         {
-            return await shortenedUrlRepository.GetByShortCodeAsync(request.shortCode);
+            var originalUrl = await hybridCache.GetOrCreateAsync(request.shortCode, async token =>
+            {
+                var originalUrl =  await shortenedUrlRepository.GetByShortCodeAsync(request.shortCode);
+                return originalUrl?.OriginalUrl;
+            });
+            return originalUrl;
         }
     }
 }
