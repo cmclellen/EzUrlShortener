@@ -11,6 +11,12 @@ namespace Ez.UrlShortener.Persistence.Repositories
             await dbContext.ShortenedUrls.AddAsync(shortenedUrl);
         }
 
+        public Task DeleteAsync(ShortenedUrl shortenedUrl)
+        {
+            dbContext.Remove(shortenedUrl);
+            return Task.CompletedTask;
+        }
+
         public async Task<IList<ShortenedUrl>> GetAllAsync()
         {
             return await dbContext.ShortenedUrls.ToListAsync();
