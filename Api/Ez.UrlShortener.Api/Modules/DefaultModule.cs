@@ -50,10 +50,10 @@ namespace Ez.UrlShortener.Api.Modules
             return Results.Redirect(originalUrl);
         }
 
-        private async Task<string[]> GetAllUrls(ISender sender)
+        private async Task<IList<ShortenedUrl>> GetAllUrls(ISender sender)
         {
             var shortenedUrls= await sender.Send(new GetAllUrlsQuery());
-            return shortenedUrls.Select(item=>item.OriginalUrl).ToArray();
+            return shortenedUrls;
         }
     }
 }

@@ -17,11 +17,16 @@ function AddUrl() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   function onSubmit(data: any) {
-    shortenUrl(data.url);
+    shortenUrl(data.url, {
+      onSuccess: () => {
+        reset();
+      },
+    });
   }
 
   const { shortenUrl } = useShortenUrl();
