@@ -23,6 +23,23 @@ export function shortenUrl(urlToShorten: string) {
   });
 }
 
+export function getOriginalUrl(shortCode: string) {
+  const params = { shortCode };
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params,
+  };
+  return fetch("/api/v1/", options).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to get original URL");
+    }
+    return response.json();
+  });
+}
+
 export function getUrls(): Promise<ShortenedUrl[]> {
   const options = {
     method: "GET",
@@ -32,7 +49,7 @@ export function getUrls(): Promise<ShortenedUrl[]> {
   };
   return fetch("/api/v1/urls", options).then((response) => {
     if (!response.ok) {
-      throw new Error("Failed to shorten URL");
+      throw new Error("Failed to get URLs");
     }
     return response.json();
   });

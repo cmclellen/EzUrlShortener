@@ -17,8 +17,8 @@ function ListUrls() {
               <div className="text-end">
                 <Link
                   className="text-blue-600 hover:underline"
+                  to={`/api/v1/${item.shortCode}`}
                   target="_blank"
-                  to={item.originalUrl}
                 >
                   {item.shortCode}
                 </Link>
