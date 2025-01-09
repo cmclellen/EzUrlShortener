@@ -4,6 +4,15 @@ import PageLayout from "../ui/PageLayout";
 import FormError from "../ui/FormError";
 import useShortenUrl from "../features/shortenUrl/useShortenUrl";
 
+function isValidHttpUrl(urlText: string) {
+  try {
+    const newUrl = new URL(urlText);
+    return newUrl.protocol === "http:" || newUrl.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 function AddUrl() {
   const {
     register,
@@ -24,13 +33,17 @@ function AddUrl() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <label>
-          <label>URL</label>
+          <label htmlFor="url" className="mb-2 block text-sm font-medium">
+            URL
+          </label>
           <input
             type="url"
+            id="url"
             placeholder="https://example.com"
-            className="rounded border border-gray-300 px-2 py-1"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             {...register("url", {
               required: "URL is required",
+              validate: (value) => isValidHttpUrl(value) || "Invalid URL",
             })}
           />
           {errors?.url?.message && (
@@ -39,7 +52,7 @@ function AddUrl() {
         </label>
         <button
           type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white"
+          className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition duration-300 ease-in-out hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-100"
         >
           Add
         </button>
