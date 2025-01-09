@@ -3,9 +3,17 @@ import { Outlet } from "react-router-dom";
 function AppLayout() {
   return (
     <>
+      {/* <nav>
+        <div className="bg-blue-700 p-4 text-white">
+          <div className="container mx-auto flex items-center justify-between">
+            <h1 className="text-xl font-semibold">Shorten URL</h1>
+          </div>
+        </div>
+      </nav> */}
+
       <div className="relative font-poppins">
         <div
-          className="fixed inset-0 bg-gray-500/75 transition-opacity"
+          className="fixed inset-0 border border-red-500 bg-gray-500/75 transition-opacity"
           aria-hidden="true"
         ></div>
 

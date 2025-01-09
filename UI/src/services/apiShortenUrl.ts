@@ -1,10 +1,18 @@
 export function shortenUrl(urlToShorten: string) {
-  return fetch("https://localhost:7231/api/v1/shorten?url=" + urlToShorten, {
+  const params = { url: urlToShorten };
+  const options = {
     method: "POST",
-  }).then((response) => {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return fetch(
+    "/api/v1/shorten?" + new URLSearchParams(params).toString(),
+    options,
+  ).then((response) => {
     if (!response.ok) {
       throw new Error("Failed to shorten URL");
     }
-    return response.json();
+    return response;
   });
 }

@@ -7,7 +7,7 @@ export default function useShortenUrl() {
   const { isPending: isShorteningUrl, mutate: shortenUrl } = useMutation({
     mutationFn: shortenUrlApi,
     onSuccess: () => {
-      toast.success("Shopping list successfully created");
+      toast.success("URL shortened successfully created");
       queryClient.invalidateQueries({ queryKey: ["url"] });
     },
     onError: (err) => {

@@ -4,6 +4,7 @@ import AppLayout from "./ui/AppLayout";
 import AddUrl from "./pages/AddUrl";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +20,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
