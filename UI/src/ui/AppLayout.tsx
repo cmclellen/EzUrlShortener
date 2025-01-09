@@ -14,8 +14,8 @@ function AppLayout() {
           aria-hidden="true"
         ></div>
 
-        <div className="fixed inset-0">
-          <div className="flex w-auto flex-grow space-x-3 bg-blue-700 p-4 text-sm text-white">
+        <div className="fixed inset-0 flex flex-col">
+          <div className="flex w-auto space-x-3 bg-blue-700 p-4 text-sm text-white">
             {navItems.map((item) => (
               <NavLink
                 to={item.to}
@@ -32,7 +32,7 @@ function AppLayout() {
             ))}
           </div>
 
-          <div className="mx-auto flex max-w-md items-center justify-center">
+          <div className="mx-auto flex max-w-md flex-grow items-center justify-center">
             <div className="w-full rounded-lg bg-white p-10 shadow-xl shadow-stone-900/15">
               <Outlet />
             </div>
