@@ -22,10 +22,10 @@ function ListUrls() {
         </p>
       )}
       {urls && (
-        <div className="grid grid-cols-5 gap-4 text-stone-700">
+        <ul>
           {urls &&
             urls.map((item) => (
-              <>
+              <li key={item.shortCode} className="grid grid-cols-5 gap-2 py-2">
                 <div className="col-span-3">{item.originalUrl}</div>
                 <div className="flex justify-end">
                   <Link
@@ -42,9 +42,9 @@ function ListUrls() {
                     onClick={() => handleDeleteShortCode(item.shortCode)}
                   />
                 </div>
-              </>
+              </li>
             ))}
-        </div>
+        </ul>
       )}
     </PageLayout>
   );
