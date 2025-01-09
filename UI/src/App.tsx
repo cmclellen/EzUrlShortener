@@ -27,7 +27,7 @@ function App() {
           <Route element={<AppLayout />}>
             <Route index element={<Navigate replace to="add-url" />} />
             <Route path="add-url" element={<AddUrl />}></Route>
-            <Route path="list" element={<ListUrls />}></Route>
+            <Route path="list-urls" element={<ListUrls />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,8 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom";
-import clsx from "clsx";
+
 const navItems = [
   { text: "Shorten URL", to: "/add-url" },
-  { text: "List All URLs", to: "/list" },
+  { text: "List URLs", to: "/list-urls" },
 ];
 
 function AppLayout() {
