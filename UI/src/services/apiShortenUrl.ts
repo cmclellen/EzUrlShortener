@@ -4,6 +4,21 @@ export interface ShortenedUrl {
   createdAtUtc: Date;
 }
 
+export function deleteShortenedUrl(shortCode: string) {
+  const options = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return fetch(`/api/v1/${shortCode}`, options).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to delete shortened URL");
+    }
+    return response;
+  });
+}
+
 export function shortenUrl(urlToShorten: string) {
   const params = { url: urlToShorten };
   const options = {
