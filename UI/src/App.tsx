@@ -5,6 +5,7 @@ import AddUrl from "./pages/AddUrl";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
+import ListUrls from "./pages/ListUrls";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,7 @@ function App() {
           <Route element={<AppLayout />}>
             <Route index element={<Navigate replace to="add-url" />} />
             <Route path="add-url" element={<AddUrl />}></Route>
+            <Route path="list" element={<ListUrls />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
