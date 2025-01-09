@@ -32,7 +32,7 @@ function AppLayout() {
             ))}
           </div>
 
-          <div className="mx-auto flex h-dvh max-w-md items-center justify-center">
+          <div className="mx-auto flex max-w-md items-center justify-center">
             <div className="w-full rounded-lg bg-white p-10 shadow-xl shadow-stone-900/15">
               <Outlet />
             </div>
