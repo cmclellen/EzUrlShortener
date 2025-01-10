@@ -9,7 +9,7 @@ export default function useDeleteShortenedUrl() {
       mutationFn: deleteShortenedUrlApi,
       onSuccess: () => {
         toast.success("URL shortened successfully created");
-        queryClient.invalidateQueries({ queryKey: ["url"] });
+        queryClient.invalidateQueries({ queryKey: ["urls"] });
       },
       onError: (err) => {
         toast.error(err.message);
