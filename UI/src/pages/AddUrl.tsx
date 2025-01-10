@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import PageLayout from "../ui/PageLayout";
 import FormError from "../ui/FormError";
 import useShortenUrl from "../features/shortenUrl/useShortenUrl";
+import Spinner from "../ui/Spinner";
 
 function isValidHttpUrl(urlText: string) {
   try {
@@ -29,7 +30,9 @@ function AddUrl() {
     });
   }
 
-  const { shortenUrl } = useShortenUrl();
+  const { shortenUrl, isShorteningUrl } = useShortenUrl();
+
+  if (isShorteningUrl) return <Spinner />;
 
   return (
     <PageLayout title="Add URL">

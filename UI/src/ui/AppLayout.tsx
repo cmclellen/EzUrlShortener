@@ -18,6 +18,7 @@ function AppLayout() {
           <div className="flex w-auto space-x-3 bg-blue-700 p-4 text-sm text-white">
             {navItems.map((item) => (
               <NavLink
+                key={item.to}
                 to={item.to}
                 className={({ isActive, isPending }) =>
                   isPending

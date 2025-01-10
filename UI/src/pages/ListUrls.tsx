@@ -3,19 +3,21 @@ import useGetUrls from "../features/shortenUrl/useGetUrls";
 import PageLayout from "../ui/PageLayout";
 import { TiTrash } from "react-icons/ti";
 import useDeleteShortenedUrl from "../features/shortenUrl/useDeleteShortenedUrl";
+import Spinner from "../ui/Spinner";
 
 function ListUrls() {
   const { isLoadingUrls, urls } = useGetUrls();
-  const { deleteShortenedUrl } = useDeleteShortenedUrl();
+  const { deleteShortenedUrl, isDeletingShortenedUrl } =
+    useDeleteShortenedUrl();
 
   function handleDeleteShortCode(shortCode: string) {
     deleteShortenedUrl(shortCode);
   }
 
+  if (isLoadingUrls || isDeletingShortenedUrl) return <Spinner />;
+
   return (
     <PageLayout title="List URLs">
-      {isLoadingUrls && <p>Loading...</p>}
-
       {urls && !urls.length && !isLoadingUrls && (
         <p className="text-center font-semibold text-stone-600">
           No URLs found
