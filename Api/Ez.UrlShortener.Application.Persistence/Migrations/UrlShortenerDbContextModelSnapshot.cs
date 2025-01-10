@@ -44,6 +44,32 @@ namespace Ez.UrlShortener.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("ShortenedUrls");
+
+                    b.HasData(
+                        new
+                        {
+                            ShortCode = "abc123",
+                            CreatedAtUtc = new DateTime(2025, 1, 1, 15, 0, 0, 0, DateTimeKind.Utc),
+                            OriginalUrl = "https://www.google.com"
+                        },
+                        new
+                        {
+                            ShortCode = "abc124",
+                            CreatedAtUtc = new DateTime(2025, 1, 1, 15, 0, 1, 0, DateTimeKind.Utc),
+                            OriginalUrl = "https://www.news24.com"
+                        },
+                        new
+                        {
+                            ShortCode = "abc125",
+                            CreatedAtUtc = new DateTime(2025, 1, 1, 15, 0, 2, 0, DateTimeKind.Utc),
+                            OriginalUrl = "https://learn.microsoft.com/en-us/ef/core/modeling/data-seeding"
+                        },
+                        new
+                        {
+                            ShortCode = "abc126",
+                            CreatedAtUtc = new DateTime(2025, 1, 1, 15, 0, 3, 0, DateTimeKind.Utc),
+                            OriginalUrl = "https://en.wikipedia.org/wiki/42_(number)"
+                        });
                 });
 #pragma warning restore 612, 618
         }

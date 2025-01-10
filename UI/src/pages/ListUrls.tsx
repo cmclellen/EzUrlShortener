@@ -26,7 +26,9 @@ function ListUrls() {
           {urls &&
             urls.map((item) => (
               <li key={item.shortCode} className="grid grid-cols-5 gap-2 py-2">
-                <div className="col-span-3">{item.originalUrl}</div>
+                <div className="col-span-3 inline-block overflow-hidden text-ellipsis text-nowrap">
+                  {item.originalUrl}
+                </div>
                 <div className="flex justify-end">
                   <Link
                     className="text-blue-600 hover:underline"

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Ez.UrlShortener.Persistence.Migrations
 {
     /// <inheritdoc />
@@ -22,6 +24,17 @@ namespace Ez.UrlShortener.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ShortenedUrls", x => x.ShortCode);
+                });
+
+            migrationBuilder.InsertData(
+                table: "ShortenedUrls",
+                columns: new[] { "ShortCode", "CreatedAtUtc", "OriginalUrl" },
+                values: new object[,]
+                {
+                    { "abc123", new DateTime(2025, 1, 1, 15, 0, 0, 0, DateTimeKind.Utc), "https://www.google.com" },
+                    { "abc124", new DateTime(2025, 1, 1, 15, 0, 1, 0, DateTimeKind.Utc), "https://www.news24.com" },
+                    { "abc125", new DateTime(2025, 1, 1, 15, 0, 2, 0, DateTimeKind.Utc), "https://learn.microsoft.com/en-us/ef/core/modeling/data-seeding" },
+                    { "abc126", new DateTime(2025, 1, 1, 15, 0, 3, 0, DateTimeKind.Utc), "https://en.wikipedia.org/wiki/42_(number)" }
                 });
 
             migrationBuilder.CreateIndex(
