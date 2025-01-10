@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import Modal from "./Modal";
 
 const navItems = [
   { text: "Shorten URL", to: "/add-url" },
@@ -7,7 +8,7 @@ const navItems = [
 
 function AppLayout() {
   return (
-    <>
+    <Modal>
       <div className="relative font-poppins">
         <div
           className="fixed inset-0 bg-gray-500/75 transition-opacity"
@@ -40,7 +41,7 @@ function AppLayout() {
           </div>
         </div>
       </div>
-    </>
+    </Modal>
   );
 }
 
