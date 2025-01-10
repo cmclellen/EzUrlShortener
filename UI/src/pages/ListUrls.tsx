@@ -25,11 +25,14 @@ function ListUrls() {
         <ul>
           {urls &&
             urls.map((item) => (
-              <li key={item.shortCode} className="grid grid-cols-5 gap-2 py-2">
+              <li
+                key={item.shortCode}
+                className="grid grid-cols-4 gap-2 rounded-lg p-2 text-sm even:bg-gray-200"
+              >
                 <div className="col-span-3 inline-block overflow-hidden text-ellipsis text-nowrap">
                   {item.originalUrl}
                 </div>
-                <div className="flex justify-end">
+                <div className="flex items-center justify-between">
                   <Link
                     className="text-blue-600 hover:underline"
                     to={`/api/v1/${item.shortCode}`}
@@ -37,10 +40,8 @@ function ListUrls() {
                   >
                     {item.shortCode}
                   </Link>
-                </div>
-                <div className="flex justify-center text-red-800">
                   <TiTrash
-                    className="text-xl"
+                    className="text-xl text-red-800"
                     onClick={() => handleDeleteShortCode(item.shortCode)}
                   />
                 </div>
