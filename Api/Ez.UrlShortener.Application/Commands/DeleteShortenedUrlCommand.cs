@@ -1,4 +1,5 @@
-﻿using Ez.UrlShortener.Domain.Exceptions;
+﻿using Ez.UrlShortener.Application.Diagnostics;
+using Ez.UrlShortener.Domain.Exceptions;
 using Ez.UrlShortener.Domain.Repositories;
 using MediatR;
 using System.Diagnostics.Metrics;
@@ -11,9 +12,7 @@ namespace Ez.UrlShortener.Application.Commands
         IShortenedUrlRepository shortenedUrlRepository, 
         IUnitOfWork unitOfWork) : IRequestHandler<DeleteShortenedUrlCommand>
     {
-        public const string METER_NAME = "UrlShortener.Api";
-        private static readonly Meter Meter = new(METER_NAME);
-        private static readonly Counter<int> DeletionsCounter = Meter.CreateCounter<int>("url_shortener.deletions", "Number of shortened URLs deleted");
+        private static readonly Counter<int> DeletionsCounter = AppMeters.ApiMeter.CreateCounter<int>("url_shortener.deletions", "Number of shortened URLs deleted");
 
         public async Task Handle(DeleteShortenedUrlCommand request, CancellationToken cancellationToken)
         {
