@@ -51,10 +51,7 @@ function ListUrls() {
                       {item.shortCode}
                     </Link>
                     <Modal.Open opensWindowName="delete-url">
-                      <TiTrash
-                        className="text-xl text-red-800"
-                        // onClick={() => handleDeleteShortCode(item.shortCode)}
-                      />
+                      <TiTrash className="text-xl text-red-800" />
                     </Modal.Open>
                     <Modal.Window name="delete-url">
                       <ConfirmDelete

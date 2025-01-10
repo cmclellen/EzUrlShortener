@@ -32,7 +32,7 @@ interface ModalProps {
   children: ReactNode;
 }
 
-function Modal({ children }: ModalProps) {
+const Modal = function Modal({ children }: ModalProps) {
   const [openName, setOpenName] = useState("");
   const closeModal = () => setOpenName("");
   const openModal = (openName: string) => setOpenName(openName);
@@ -42,7 +42,7 @@ function Modal({ children }: ModalProps) {
       {children}
     </ModalContext.Provider>
   );
-}
+};
 
 interface OpenProps {
   children: ReactElement;
