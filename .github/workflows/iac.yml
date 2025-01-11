@@ -45,8 +45,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            let principalId = az rest --method GET --uri https://graph.microsoft.com/v1.0/me | from json | get id
-            echo $principalId
+            az account show
 
       - uses: azure/arm-deploy@v2
         with:
