@@ -35,5 +35,11 @@ jobs:
           # cache: true
           # cache-dependency-path: ./Api/packages.lock.json
 
-      - name: Display dotnet version
-        run: dotnet --version
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build
+
+      - name: Test with the dotnet CLI
+        run: dotnet test
