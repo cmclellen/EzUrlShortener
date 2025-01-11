@@ -1,0 +1,46 @@
+name: Deploy API
+
+on:
+  push:
+    paths:
+      - "Api/**"
+      - ".github/workflows/api.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  ACTIONS_STEP_DEBUG: true
+  DOTNET_VERSION: 9.x
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Api
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            Api/
+
+      - name: Setup dotnet ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          # cache: true
+          # cache-dependency-path: ./Api/packages.lock.json
+
+          # TODO: https://learn.microsoft.com/en-us/azure/container-apps/github-actions#build-and-deploy-to-container-apps
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build
+
+      - name: Test with the dotnet CLI
+        run: dotnet test
