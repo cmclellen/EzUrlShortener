@@ -12,6 +12,7 @@ permissions:
 
 env:
   NODE_VERSION: 22
+  ACTIONS_STEP_DEBUG: true
 
 jobs:
   deploy:
