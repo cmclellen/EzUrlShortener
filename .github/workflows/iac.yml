@@ -40,5 +40,5 @@ jobs:
       - uses: azure/arm-deploy@v2
         with:
           resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
-          template: "$GITHUB_WORKSPACE/IaC/main.bicep"
+          template: "${{ github.workspace }}/IaC/main.bicep"
           parameters: ../IaC/main.dev.json
