@@ -46,7 +46,10 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az account show
+            principalId=$(az ad signed-in-user show --query objectId --output tsv)
+            echo "principalId=$principalId" >> $GITHUB_ENV
+            echo "principalId=$principalId"
+            # az account show
 
       - uses: azure/arm-deploy@v2
         with:
