@@ -44,4 +44,4 @@ jobs:
         with:
           resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
           template: ./IaC/main.bicep
-          parameters: ./IaC/main.dev.bicepparam scPricipalId=c609e598-e85d-457f-b4f7-4c7bbdcb79f4
+          parameters: ./IaC/main.dev.bicepparam scPricipalId=ce55ba4b-2e5b-42b2-85de-41cd9a8841b9
