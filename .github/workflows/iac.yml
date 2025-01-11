@@ -15,24 +15,21 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./IaC
     environment: dev
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: IaC
+        sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            IaC/
 
       - name: Env variables
         run: |
           echo "Repository name: $GITHUB_REPOSITORY"
           echo "Branch name: $GITHUB_REF"
           echo "Workspace: $GITHUB_WORKSPACE"
-
-      # - name: Set use_binary_from_path to false
-      #   uses: azure/cli@v2
-      #   with:
-      #     azcliversion: latest
-      #     inlineScript: |
-      #       az config set bicep.use_binary_from_path=false
 
       - uses: azure/login@v2
         with:
@@ -43,16 +40,5 @@ jobs:
       - uses: azure/arm-deploy@v2
         with:
           resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
-          template: ./IaC/main.bicep
-          parameters: ./IaC/main.dev.bicepparam
-
-      # - name: Convert storage account to static web site
-      #   uses: azure/cli@v2
-      #   with:
-      #     azcliversion: latest
-      #     inlineScript: |
-      #       az storage blob service-properties update \
-      #         --account-name stvnsxt6qwqbeksdev \
-      #         --static-website \
-      #         --404-document error.html \
-      #         --index-document index.html
+          template: ./main.bicep
+          parameters: ./main.dev.bicepparam
