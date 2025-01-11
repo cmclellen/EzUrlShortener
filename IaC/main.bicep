@@ -7,6 +7,8 @@ param location string = resourceGroup().location
 ])
 param environment string
 
+param scPricipalId string
+
 var uniqueResourceGroupName = uniqueString(resourceGroup().id)
 
 param deploymentScriptTimestamp string = utcNow()
@@ -27,7 +29,8 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-var storageAccountContributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab') // This is the Storage Account Contributor role, which is the minimum role permission we can give. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#:~:text=17d1049b-9a84-46fb-8f53-869881c3d3ab
+var storageAccountContributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab') 
+var storageAccountBlobDataOwnerRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b') 
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: webStorageAccount
@@ -35,6 +38,15 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   properties: {
     roleDefinitionId: storageAccountContributorRoleDefinitionId
     principalId: managedIdentity.properties.principalId
+  }
+}
+
+resource scRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: webStorageAccount
+  name: guid(resourceGroup().id, storageAccountBlobDataOwnerRoleDefinitionId)
+  properties: {
+    roleDefinitionId: storageAccountBlobDataOwnerRoleDefinitionId
+    principalId: scPricipalId
   }
 }
 
