@@ -8,9 +8,7 @@ param location string = resourceGroup().location
   'dev'
 ])
 param environment string
-
 param scPricipalId string
-
 param sqlAdminSid string
 param sqlAdminLogin string
 
@@ -30,7 +28,6 @@ module database 'modules/database.bicep' = {
   name: 'database'
   params: {
     location: location
-    scPricipalId: scPricipalId
     uniqueResourceGroupName: uniqueResourceGroupName
     environment: environment
     sqlAdminSid: sqlAdminSid

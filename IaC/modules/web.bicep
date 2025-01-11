@@ -1,15 +1,12 @@
 @description('The Azure region into which the resources should be deployed.')
 param location string = resourceGroup().location
-
 param scPricipalId string
-
 param uniqueResourceGroupName string
-
 param environment string
-
 param deploymentScriptTimestamp string = utcNow()
-param indexDocument string = 'index.html'
-param errorDocument404Path string = 'error.html'
+
+var indexDocument = 'index.html'
+var errorDocument404Path = 'error.html'
 
 resource webStorageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   #disable-next-line BCP334
