@@ -1,10 +1,10 @@
-name: Provision Azure resources
+name: Deploy web app
 
 on:
   push:
     paths:
       - "UI/**"
-      - ".github\workflows\web.yml"
+      - ".github/workflows/web.yml"
 
 permissions:
   id-token: write
