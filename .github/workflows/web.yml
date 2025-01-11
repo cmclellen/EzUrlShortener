@@ -29,15 +29,13 @@ jobs:
           sparse-checkout: |
             UI/
 
-      # - name: List files in the repository
-      #   run: |
-      #     ls ${{ github.workspace }}
-
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+
       - run: npm ci
+
       - run: npm run build --if-present
 
       - uses: azure/login@v2
@@ -50,4 +48,6 @@ jobs:
         uses: azure/CLI@v2
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name ${{env.STORAGE_CCOUNT_NAME}} --auth-mode key -d '$web' -s .
+            az storage blob upload-batch --account-key --account-name ${{env.STORAGE_CCOUNT_NAME}} -d '$web' -s ./UI/dist
+
+# az storage blob upload-batch --account-key --account-name ${{env.STORAGE_CCOUNT_NAME}} --auth-mode key -d '$web' -s .
