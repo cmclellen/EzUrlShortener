@@ -17,19 +17,24 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./UI
     steps:
       - uses: actions/checkout@v4
         with:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             UI/
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      # - name: Use Node.js ${{ env.NODE_VERSION }}
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{ env.NODE_VERSION }}
-      # - run: npm ci
-      # - run: npm run build --if-present
-      # - run: npm test
+
+      # - name: List files in the repository
+      #   run: |
+      #     ls ${{ github.workspace }}
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
