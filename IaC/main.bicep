@@ -14,6 +14,15 @@ param sqlAdminLogin string
 
 var uniqueResourceGroupName = uniqueString(resourceGroup().id)
 
+module law 'modules/logs.bicep' = {
+  name: 'logs'
+  params: {
+    location: location
+    uniqueResourceGroupName: uniqueResourceGroupName
+    environment: environment
+  }
+}
+
 module storage_account 'modules/web.bicep' = {
   name: 'webStorageAccount'
   params: {
@@ -37,6 +46,15 @@ module database 'modules/database.bicep' = {
 
 module cache 'modules/cache.bicep' = {
   name: 'cache'
+  params: {
+    location: location
+    uniqueResourceGroupName: uniqueResourceGroupName
+    environment: environment
+  }
+}
+
+module api 'modules/api.bicep' = {
+  name: 'api'
   params: {
     location: location
     uniqueResourceGroupName: uniqueResourceGroupName
