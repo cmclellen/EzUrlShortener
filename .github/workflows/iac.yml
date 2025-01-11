@@ -1,0 +1,35 @@
+name: Provision Azure resources
+
+on: push
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_RESOURCEGROUP_NAME: "rg-urlshort-dev-aue"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Env variables
+        run: |
+          echo "Repository name: $GITHUB_REPOSITORY"
+          echo "Branch name: $GITHUB_REF"
+          echo "Workspace: $GITHUB_WORKSPACE"
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - uses: azure/arm-deploy@v2
+        with:
+          resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
+          template: ./IaC/main.bicep
+          parameters: ./IaC/main.dev.bicepparam
