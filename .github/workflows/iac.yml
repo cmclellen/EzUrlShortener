@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - "IaC/**"
+      - ".github/workflows/iac.yml"
+  workflow_dispatch
 
 permissions:
   id-token: write
