@@ -5,7 +5,7 @@ on:
     paths:
       - "IaC/**"
       - ".github/workflows/iac.yml"
-  workflow_dispatch
+  workflow_dispatch:
 
 permissions:
   id-token: write
