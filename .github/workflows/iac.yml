@@ -14,9 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
-      - uses: actions/checkout@v3
-        with:
-          path: repo
+      - uses: actions/checkout@v4
 
       - name: Env variables
         run: |
