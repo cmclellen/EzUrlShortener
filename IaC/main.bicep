@@ -48,6 +48,9 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
       '${managedIdentity.id}': {}
     }
   }  
+  dependsOn: [
+    roleAssignment
+  ]
   properties: {
     azPowerShellVersion: '3.0'
     scriptContent: '''
@@ -68,3 +71,5 @@ Enable-AzStorageStaticWebsite -Context $ctx -IndexDocument $IndexDocument -Error
     arguments: '-ResourceGroupName ${resourceGroup().name} -StorageAccountName ${webStorageAccount.name} -IndexDocument ${indexDocument} -ErrorDocument404Path ${errorDocument404Path}'
   }
 }
+
+output staticWebsiteHostName string = replace(replace(webStorageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
