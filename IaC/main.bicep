@@ -34,3 +34,12 @@ module database 'modules/database.bicep' = {
     sqlAdminLogin: sqlAdminLogin
   }
 }
+
+module cache 'modules/cache.bicep' = {
+  name: 'cache'
+  params: {
+    location: location
+    uniqueResourceGroupName: uniqueResourceGroupName
+    environment: environment
+  }
+}
