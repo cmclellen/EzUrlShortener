@@ -23,7 +23,8 @@ jobs:
     environment: dev
     steps:
       - uses: actions/checkout@v4
-        sparse-checkout-cone-mode: false
+        with:
+          sparse-checkout-cone-mode: false
           sparse-checkout: |
             IaC/
 
