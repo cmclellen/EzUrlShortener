@@ -5,11 +5,14 @@ param location string = resourceGroup().location
 
 @description('The environment.')
 @allowed([
-  'dev'  
+  'dev'
 ])
 param environment string
 
 param scPricipalId string
+
+param sqlAdminSid string
+param sqlAdminLogin string
 
 var uniqueResourceGroupName = uniqueString(resourceGroup().id)
 
@@ -20,5 +23,17 @@ module storage_account 'modules/web.bicep' = {
     scPricipalId: scPricipalId
     uniqueResourceGroupName: uniqueResourceGroupName
     environment: environment
+  }
+}
+
+module database 'modules/database.bicep' = {
+  name: 'database'
+  params: {
+    location: location
+    scPricipalId: scPricipalId
+    uniqueResourceGroupName: uniqueResourceGroupName
+    environment: environment
+    sqlAdminSid: sqlAdminSid
+    sqlAdminLogin: sqlAdminLogin
   }
 }

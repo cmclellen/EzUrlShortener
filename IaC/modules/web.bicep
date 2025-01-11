@@ -12,6 +12,7 @@ param indexDocument string = 'index.html'
 param errorDocument404Path string = 'error.html'
 
 resource webStorageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+  #disable-next-line BCP334
   name: 'st${uniqueResourceGroupName}${environment}'
   location: location
   kind: 'StorageV2'
@@ -25,8 +26,14 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-var storageAccountContributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab') 
-var storageAccountBlobDataOwnerRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b') 
+var storageAccountContributorRoleDefinitionId = subscriptionResourceId(
+  'Microsoft.Authorization/roleDefinitions',
+  '17d1049b-9a84-46fb-8f53-869881c3d3ab'
+)
+var storageAccountBlobDataOwnerRoleDefinitionId = subscriptionResourceId(
+  'Microsoft.Authorization/roleDefinitions',
+  'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+)
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: webStorageAccount
@@ -55,7 +62,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
     userAssignedIdentities: {
       '${managedIdentity.id}': {}
     }
-  }  
+  }
   dependsOn: [
     roleAssignment
   ]
@@ -68,4 +75,8 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
   }
 }
 
-output staticWebsiteHostName string = replace(replace(webStorageAccount.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+output staticWebsiteHostName string = replace(
+  replace(webStorageAccount.properties.primaryEndpoints.web, 'https://', ''),
+  '/',
+  ''
+)
