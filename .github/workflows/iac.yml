@@ -22,6 +22,13 @@ jobs:
           echo "Branch name: $GITHUB_REF"
           echo "Workspace: $GITHUB_WORKSPACE"
 
+      # - name: Set use_binary_from_path to false
+      #   uses: azure/cli@v2
+      #   with:
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az config set bicep.use_binary_from_path=false
+
       - uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -33,3 +40,14 @@ jobs:
           resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
           template: ./IaC/main.bicep
           parameters: ./IaC/main.dev.bicepparam
+
+      # - name: Convert storage account to static web site
+      #   uses: azure/cli@v2
+      #   with:
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az storage blob service-properties update \
+      #         --account-name stvnsxt6qwqbeksdev \
+      #         --static-website \
+      #         --404-document error.html \
+      #         --index-document index.html
