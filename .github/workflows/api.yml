@@ -35,6 +35,7 @@ jobs:
           # cache: true
           # cache-dependency-path: ./Api/packages.lock.json
 
+          # TODO: https://learn.microsoft.com/en-us/azure/container-apps/github-actions#build-and-deploy-to-container-apps
       - name: Install dependencies
         run: dotnet restore
 
