@@ -33,5 +33,5 @@ jobs:
       - uses: azure/arm-deploy@v2
         with:
           resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
-          template: ./deploy/main.bicep
-          parameters: ./Iac/main.${{parameters.env}}.json
+          template: ./IaC/main.bicep
+          parameters: ./IaC/main.dev.json
