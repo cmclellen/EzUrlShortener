@@ -47,7 +47,6 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az account show
-            az ad sp list --show-mine
 
       - uses: azure/arm-deploy@v2
         with:
