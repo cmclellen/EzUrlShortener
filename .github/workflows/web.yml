@@ -48,4 +48,4 @@ jobs:
         uses: azure/CLI@v2
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name ${{env.STORAGE_CCOUNT_NAME}} --auth-mode key -d '$web' -s ./UI/dist
+            az storage blob upload-batch --account-name ${{env.STORAGE_CCOUNT_NAME}} --auth-mode login -d '$web' -s ./UI/dist
