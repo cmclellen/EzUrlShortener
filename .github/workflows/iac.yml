@@ -33,3 +33,14 @@ jobs:
           resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
           template: ./IaC/main.bicep
           parameters: ./IaC/main.dev.bicepparam
+
+      - name: Convert storage account to static web site
+        uses: azure/cli@v2
+        with:
+        azcliversion: latest
+        inlineScript: |
+          az storage blob service-properties update \ 
+            --account-name stvnsxt6qwqbeksdev \ 
+            --static-website \ 
+            --404-document error.html \ 
+            --index-document index.html
