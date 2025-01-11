@@ -22,12 +22,12 @@ jobs:
           echo "Branch name: $GITHUB_REF"
           echo "Workspace: $GITHUB_WORKSPACE"
 
-      - name: Set use_binary_from_path to false
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az config set bicep.use_binary_from_path=false
+      # - name: Set use_binary_from_path to false
+      #   uses: azure/cli@v2
+      #   with:
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az config set bicep.use_binary_from_path=false
 
       - uses: azure/login@v2
         with:
