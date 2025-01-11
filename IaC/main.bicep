@@ -22,17 +22,32 @@ resource webStorageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   }
 }
 
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: 'DeploymentScript'
+  location: location
+}
+
+var storageAccountContributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab') // This is the Storage Account Contributor role, which is the minimum role permission we can give. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#:~:text=17d1049b-9a84-46fb-8f53-869881c3d3ab
+
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  scope: webStorageAccount
+  name: guid(resourceGroup().id, storageAccountContributorRoleDefinitionId)
+  properties: {
+    roleDefinitionId: storageAccountContributorRoleDefinitionId
+    principalId: managedIdentity.properties.principalId
+  }
+}
+
 resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: 'deploymentScript'
   location: location
   kind: 'AzurePowerShell'
-  // identity: {
-  //   type: 'UserAssigned'
-  //   userAssignedIdentities: {
-  //     '${managedIdentity.id}': {}
-  //   }
-  // }
-  
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }  
   properties: {
     azPowerShellVersion: '3.0'
     scriptContent: '''
