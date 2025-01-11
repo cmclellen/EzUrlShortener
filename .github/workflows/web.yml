@@ -19,7 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: UI
+          sparse-checkout: |
+            UI/
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
