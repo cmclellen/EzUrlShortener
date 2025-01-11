@@ -40,16 +40,23 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # TODO 1: Get the current principal ID
-      - name: Get current principal ID
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            principalId=$(az ad signed-in-user show --query objectId --output tsv)
-            echo "principalId=$principalId" >> $GITHUB_ENV
-            echo "principalId=$principalId"
-            # az account show
+      - name: Get service principal ID
+        id: get-sp-id
+        run: |
+          spId=$(az ad sp show --id http://$GITHUB_REPOSITORY --query objectId --output tsv)
+          echo "spId=$spId" >> $GITHUB_ENV
+          echo "spId=$spId"
+
+      # # TODO 1: Get the current principal ID
+      # - name: Get current principal ID
+      #   uses: azure/cli@v2
+      #   with:
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       principalId=$(az ad signed-in-user show --query objectId --output tsv)
+      #       echo "principalId=$principalId" >> $GITHUB_ENV
+      #       echo "principalId=$principalId"
+      #       # az account show
 
       - uses: azure/arm-deploy@v2
         with:
