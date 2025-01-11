@@ -40,12 +40,11 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Get service principal ID
-        id: get-sp-id
+      - name: Get current principal ID
         run: |
-          spId=$(az ad sp show --id http://$GITHUB_REPOSITORY --query objectId --output tsv)
-          echo "spId=$spId" >> $GITHUB_ENV
-          echo "spId=$spId"
+          principalId=$(az ad signed-in-user show --query objectId --output tsv)
+          echo "principalId=$principalId" >> $GITHUB_ENV
+          echo "principalId=$principalId"
 
       # # TODO 1: Get the current principal ID
       # - name: Get current principal ID
