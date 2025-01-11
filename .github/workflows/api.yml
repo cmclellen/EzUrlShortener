@@ -1,0 +1,39 @@
+name: Deploy API
+
+on:
+  push:
+    paths:
+      - "Api/**"
+      - ".github/workflows/api.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  NODE_VERSION: 22
+  ACTIONS_STEP_DEBUG: true
+  DOTNET_VERSION: 9.x
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Api
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            Api/
+
+      - name: Setup dotnet ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
+
+      - name: Display dotnet version
+        run: dotnet --version
