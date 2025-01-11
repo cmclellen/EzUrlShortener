@@ -1,6 +1,9 @@
 name: Provision Azure resources
 
-on: push
+on:
+  push:
+    paths:
+      - "IaC/**"
 
 permissions:
   id-token: write
@@ -15,6 +18,8 @@ jobs:
     environment: dev
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: IaC
 
       - name: Env variables
         run: |

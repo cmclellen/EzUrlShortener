@@ -1,0 +1,29 @@
+name: Provision Azure resources
+
+on:
+  push:
+    paths:
+      - "UI/**"
+      - ".github\workflows\web.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: UI
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
