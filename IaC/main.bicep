@@ -53,19 +53,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   ]
   properties: {
     azPowerShellVersion: '3.0'
-    scriptContent: '''
-param(
-    [string] $ResourceGroupName,
-    [string] $StorageAccountName,
-    [string] $IndexDocument,
-    [string] $ErrorDocument404Path)
-
-$ErrorActionPreference = 'Stop'
-$storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -AccountName $StorageAccountName
-
-$ctx = $storageAccount.Context
-Enable-AzStorageStaticWebsite -Context $ctx -IndexDocument $IndexDocument -ErrorDocument404Path $ErrorDocument404Path
-'''
+    scriptContent: loadTextContent('./scripts/enable-storage-static-website.ps1')
     forceUpdateTag: deploymentScriptTimestamp
     retentionInterval: 'PT4H'
     arguments: '-ResourceGroupName ${resourceGroup().name} -StorageAccountName ${webStorageAccount.name} -IndexDocument ${indexDocument} -ErrorDocument404Path ${errorDocument404Path}'
