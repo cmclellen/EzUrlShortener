@@ -32,6 +32,8 @@ RUN dotnet publish "./Ez.UrlShortener.Api.csproj" -c $BUILD_CONFIGURATION -o /ap
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
+ENV ASPNETCORE_HTTP_PORTS=8080
+ENV ASPNETCORE_HTTPS_PORTS=8081
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Ez.UrlShortener.Api.dll"]
