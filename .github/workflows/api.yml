@@ -9,6 +9,7 @@ on:
 permissions:
   id-token: write
   contents: read
+  packages: write, read, delete
 
 env:
   ACTIONS_STEP_DEBUG: true
@@ -28,19 +29,32 @@ jobs:
           sparse-checkout: |
             Api/
 
-      - name: Setup dotnet ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v4
+      - name: "Login to GitHub Container Registry"
+        uses: docker/login-action@v1
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          # cache: true
-          # cache-dependency-path: ./Api/packages.lock.json
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
 
-          # TODO: https://learn.microsoft.com/en-us/azure/container-apps/github-actions#build-and-deploy-to-container-apps
-      - name: Install dependencies
-        run: dotnet restore
+      - name: "Build Inventory Image"
+        run: |
+          docker build . --tag ghcr.io/cmclellen/EzUrlShortener:latest
+          docker push ghcr.io/cmclellen/EzUrlShortener:latest
 
-      - name: Build
-        run: dotnet build
+      # - name: Setup dotnet ${{ env.DOTNET_VERSION }}
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Test with the dotnet CLI
-        run: dotnet test
+      # cache: true
+      # cache-dependency-path: ./Api/packages.lock.json
+
+      # TODO: https://learn.microsoft.com/en-us/azure/container-apps/github-actions#build-and-deploy-to-container-apps
+      # - name: Install dependencies
+      #   run: dotnet restore
+
+      # - name: Build
+      #   run: dotnet build
+
+      # - name: Test with the dotnet CLI
+      #   run: dotnet test
