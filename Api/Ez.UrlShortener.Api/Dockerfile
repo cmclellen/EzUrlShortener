@@ -34,6 +34,7 @@ RUN dotnet publish "./Ez.UrlShortener.Api.csproj" -c $BUILD_CONFIGURATION -o /ap
 FROM base AS final
 ENV ASPNETCORE_HTTP_PORTS=8080
 ENV ASPNETCORE_HTTPS_PORTS=8081
+ENV ASPNETCORE_URLS=http://+:8080;https://+:8081
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Ez.UrlShortener.Api.dll"]
