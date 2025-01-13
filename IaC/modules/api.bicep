@@ -57,6 +57,12 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
             cpu: json(cpuCore)
             memory: '${memorySize}Gi'
           }
+          env: [
+            {
+              name: 'ConnectionStrings:url-shortener-db'
+              value: 'abc'
+            }
+          ]
         }
       ]
       scale: {
