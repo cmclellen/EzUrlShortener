@@ -59,7 +59,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
           }
           env: [
             {
-              name: 'ConnectionStrings:url-shortener-db'
+              name: 'ConnectionStrings__url-shortener-db'
               value: 'abc'
             }
           ]
