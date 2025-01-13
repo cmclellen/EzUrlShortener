@@ -16,7 +16,7 @@ env:
   DOTNET_VERSION: 9.x
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -41,9 +41,6 @@ jobs:
           docker build . --tag ghcr.io/cmclellen/ezurlshortener:latest --file ./Ez.UrlShortener.Api/Dockerfile
           docker push ghcr.io/cmclellen/ezurlshortener:latest
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
       - name: Log in to Azure
         uses: azure/login@v1
         with:
