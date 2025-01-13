@@ -50,7 +50,7 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          acrName: ghcr.io
+          acrName: github.io
           containerAppName: ca-vnsxt6qwqbeks-dev
           resourceGroup: rg-urlshort-dev-aue
           imageToDeploy: ghcr.io/cmclellen/ezurlshortener:latest
