@@ -5,7 +5,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 LABEL org.opencontainers.image.source="https://github.com/cmclellen/ezurlshortener"
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8081
+EXPOSE 80
+EXPOSE 443
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
@@ -30,8 +31,9 @@ RUN dotnet publish "./Ez.UrlShortener.Api.csproj" -c $BUILD_CONFIGURATION -o /ap
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
-ENV ASPNETCORE_HTTP_PORTS=8081
-ENV ASPNETCORE_URLS=https://+:8081
+ENV ASPNETCORE_HTTP_PORTS=80
+ENV ASPNETCORE_HTTPS_PORTS=443
+ENV ASPNETCORE_URLS=https://+:443;http://+:80
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Ez.UrlShortener.Api.dll"]
