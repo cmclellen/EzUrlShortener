@@ -16,7 +16,7 @@ env:
   DOTNET_VERSION: 9.x
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -41,20 +41,18 @@ jobs:
           docker build . --tag ghcr.io/cmclellen/ezurlshortener:latest --file ./Ez.UrlShortener.Api/Dockerfile
           docker push ghcr.io/cmclellen/ezurlshortener:latest
 
-      # - name: Setup dotnet ${{ env.DOTNET_VERSION }}
-      #   uses: actions/setup-dotnet@v4
-      #   with:
-      #     dotnet-version: ${{ env.DOTNET_VERSION }}
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # cache: true
-      # cache-dependency-path: ./Api/packages.lock.json
-
-      # TODO: https://learn.microsoft.com/en-us/azure/container-apps/github-actions#build-and-deploy-to-container-apps
-      # - name: Install dependencies
-      #   run: dotnet restore
-
-      # - name: Build
-      #   run: dotnet build
-
-      # - name: Test with the dotnet CLI
-      #   run: dotnet test
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName: ghcr.io
+          containerAppName: ca-vnsxt6qwqbeks-dev
+          resourceGroup: rg-urlshort-dev-aue
+          imageToDeploy: ghcr.io/cmclellen/ezurlshortener:latest
