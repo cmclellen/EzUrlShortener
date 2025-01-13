@@ -38,8 +38,8 @@ jobs:
 
       - name: "Build Inventory Image"
         run: |
-          docker build . --tag ghcr.io/cmclellen/EzUrlShortener:latest
-          docker push ghcr.io/cmclellen/EzUrlShortener:latest
+          docker build . --tag ghcr.io/cmclellen/ezurlshortener:latest
+          docker push ghcr.io/cmclellen/ezurlshortener:latest
 
       # - name: Setup dotnet ${{ env.DOTNET_VERSION }}
       #   uses: actions/setup-dotnet@v4

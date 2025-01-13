@@ -2,7 +2,7 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-LABEL org.opencontainers.image.source="https://github.com/cmclellen/EzUrlShortener"
+LABEL org.opencontainers.image.source="https://github.com/cmclellen/ezurlshortener"
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
