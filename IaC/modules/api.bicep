@@ -64,7 +64,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
           env: [
             {
               name: 'ConnectionStrings__url-shortener-db'
-              value: 'Server=tcp:sql-vnsxt6qwqbeks-dev${az.environment().suffixes.sqlServerHostname},1433;Initial Catalog=sqldb-vnsxt6qwqbeks-dev;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";'
+              value: 'Server=tcp:sql-vnsxt6qwqbeks-dev${az.environment().suffixes.sqlServerHostname},1433;Initial Catalog=sqldb-vnsxt6qwqbeks-dev;TrustServerCertificate=True;Connection Timeout=30;Authentication="Active Directory Default";'
             }
             {
               name: 'ConnectionStrings__redis'
