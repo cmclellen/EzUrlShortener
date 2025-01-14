@@ -52,7 +52,11 @@ app.UseHttpsRedirection();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<UrlShortenerDbContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     var db = dbContext.Database;
+
+    logger.LogInformation("Connected to {ConnectionString}", db.GetConnectionString());
+    
     //db.EnsureDeleted();
     db.Migrate();
 }
