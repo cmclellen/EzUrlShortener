@@ -44,14 +44,14 @@ module database 'modules/database.bicep' = {
   }
 }
 
-module cache 'modules/cache.bicep' = {
-  name: 'cache'
-  params: {
-    location: location
-    uniqueResourceGroupName: uniqueResourceGroupName
-    environment: environment
-  }
-}
+// module cache 'modules/cache.bicep' = {
+//   name: 'cache'
+//   params: {
+//     location: location
+//     uniqueResourceGroupName: uniqueResourceGroupName
+//     environment: environment
+//   }
+// }
 
 module api 'modules/api.bicep' = {
   name: 'api'
