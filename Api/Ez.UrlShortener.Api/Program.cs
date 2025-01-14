@@ -54,7 +54,7 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<UrlShortenerDbContext>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     var db = dbContext.Database;
-
+    Console.WriteLine("Connected to " + db.GetConnectionString());
     logger.LogInformation("Connected to {ConnectionString}", db.GetConnectionString());
     
     //db.EnsureDeleted();
