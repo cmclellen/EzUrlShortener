@@ -29,9 +29,12 @@ var cpuCore = '0.25'
 var memorySize = '0.5'
 var containerAppName = 'ca-${uniqueResourceGroupName}-${environment}'
 
-resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
   name: 'ca-${uniqueResourceGroupName}-${environment}'
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     managedEnvironmentId: containerAppEnv.id
     configuration: {
@@ -48,6 +51,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         ]
       }
     }
+
     template: {
       revisionSuffix: 'latest'
       containers: [
@@ -61,11 +65,11 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
           env: [
             {
               name: 'ConnectionStrings__url-shortener-db'
-              value: 'abc'
+              value: 'Server=tcp:sql-vnsxt6qwqbeks-dev.database.windows.net,1433;Initial Catalog=sqldb-vnsxt6qwqbeks-dev;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";'
             }
             {
               name: 'ConnectionStrings__redis'
-              value: 'abc'
+              value: 'redis-vnsxt6qwqbeks-dev.redis.cache.windows.net'
             }
           ]
         }

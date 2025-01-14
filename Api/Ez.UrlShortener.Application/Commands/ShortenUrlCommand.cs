@@ -11,7 +11,7 @@ namespace Ez.UrlShortener.Application.Commands
 
     public class ShortenUrlCommandHandler(
         ILogger<ShortenUrlCommandHandler> logger, 
-        HybridCache hybridCache,
+        //HybridCache hybridCache,
         IShortenedUrlRepository shortenedUrlRepository, 
         IUnitOfWork unitOfWork) : IRequestHandler<ShortenUrlCommand, string>
     {
@@ -44,7 +44,7 @@ namespace Ez.UrlShortener.Application.Commands
                     });
                     await unitOfWork.SaveChangesAsync();
 
-                    await hybridCache.SetAsync(shortCode, request.urlToShorten);
+                    //await hybridCache.SetAsync(shortCode, request.urlToShorten);
 
                     return shortCode;
                 }
