@@ -49,12 +49,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<UrlShortenerDbContext>();
-//    var db = dbContext.Database;
-//    db.EnsureDeleted();
-//    db.Migrate();
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<UrlShortenerDbContext>();
+    var db = dbContext.Database;
+    db.EnsureDeleted();
+    db.Migrate();
+}
 
 app.Run();
