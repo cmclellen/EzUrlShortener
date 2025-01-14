@@ -53,7 +53,7 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<UrlShortenerDbContext>();
     var db = dbContext.Database;
-    db.EnsureDeleted();
+    //db.EnsureDeleted();
     db.Migrate();
 }
 
