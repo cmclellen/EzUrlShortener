@@ -51,9 +51,8 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
         ]
       }
     }
-
     template: {
-      revisionSuffix: 'latest'
+      // revisionSuffix: 'latest'
       containers: [
         {
           name: containerAppName
