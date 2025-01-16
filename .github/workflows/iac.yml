@@ -7,6 +7,10 @@ on:
       - ".github/workflows/iac.yml"
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   id-token: write
   contents: read
@@ -42,6 +46,7 @@ jobs:
 
       - uses: azure/arm-deploy@v2
         with:
+          scope: resourcegroup
           resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
           template: ./IaC/main.bicep
           parameters: ./IaC/main.dev.bicepparam

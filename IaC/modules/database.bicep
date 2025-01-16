@@ -5,6 +5,14 @@ param environment string
 param sqlAdminSid string
 param sqlAdminLogin string
 
+var fwRules = [
+  {
+    name: 'AzureInternal'
+    startIpAddress: '0.0.0.0'
+    endIpAddress: '0.0.0.0'
+  }
+]
+
 resource sqlServer 'Microsoft.Sql/servers@2024-05-01-preview' = {
   name: 'sql-${uniqueResourceGroupName}-${environment}'
   location: location
@@ -28,4 +36,14 @@ resource sqlServer 'Microsoft.Sql/servers@2024-05-01-preview' = {
       tier: 'Basic'
     }
   }
+
+  resource fwrules 'firewallRules' = [
+    for fwRule in fwRules: {
+      name: fwRule.name
+      properties: {
+        startIpAddress: fwRule.startIpAddress
+        endIpAddress: fwRule.endIpAddress
+      }
+    }
+  ]
 }

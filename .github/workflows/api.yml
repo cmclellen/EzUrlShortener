@@ -6,16 +6,21 @@ on:
       - "Api/**"
       - ".github/workflows/api.yml"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   id-token: write
   contents: read
+  packages: write
 
 env:
   ACTIONS_STEP_DEBUG: true
   DOTNET_VERSION: 9.x
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,19 +33,28 @@ jobs:
           sparse-checkout: |
             Api/
 
-      - name: Setup dotnet ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v4
+      - name: "Login to GitHub Container Registry"
+        uses: docker/login-action@v1
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          # cache: true
-          # cache-dependency-path: ./Api/packages.lock.json
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
 
-          # TODO: https://learn.microsoft.com/en-us/azure/container-apps/github-actions#build-and-deploy-to-container-apps
-      - name: Install dependencies
-        run: dotnet restore
+      - name: "Build Inventory Image"
+        run: |
+          docker build . --tag ghcr.io/cmclellen/ezurlshortener:latest --file ./Ez.UrlShortener.Api/Dockerfile
+          docker push ghcr.io/cmclellen/ezurlshortener:latest
 
-      - name: Build
-        run: dotnet build
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Test with the dotnet CLI
-        run: dotnet test
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          registryUrl: ghcr.io
+          containerAppName: ca-vnsxt6qwqbeks-dev
+          resourceGroup: rg-urlshort-dev-aue
+          imageToDeploy: ghcr.io/cmclellen/ezurlshortener:latest

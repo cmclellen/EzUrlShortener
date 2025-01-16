@@ -29,16 +29,20 @@ var cpuCore = '0.25'
 var memorySize = '0.5'
 var containerAppName = 'ca-${uniqueResourceGroupName}-${environment}'
 
-resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
   name: 'ca-${uniqueResourceGroupName}-${environment}'
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     managedEnvironmentId: containerAppEnv.id
     configuration: {
+      activeRevisionsMode: 'single'
       ingress: {
         external: true
-        targetPort: 80
-        allowInsecure: false
+        // targetPort: 8081
+        allowInsecure: true
         traffic: [
           {
             latestRevision: true
@@ -48,7 +52,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
       }
     }
     template: {
-      revisionSuffix: 'firstrevision'
+      // revisionSuffix: 'latest'
       containers: [
         {
           name: containerAppName
@@ -57,6 +61,20 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
             cpu: json(cpuCore)
             memory: '${memorySize}Gi'
           }
+          env: [
+            {
+              name: 'ConnectionStrings__url-shortener-db'
+              value: 'Server=tcp:sql-vnsxt6qwqbeks-dev${az.environment().suffixes.sqlServerHostname},1433;Initial Catalog=sqldb-vnsxt6qwqbeks-dev;TrustServerCertificate=True;Connection Timeout=30;Authentication="Active Directory Default";'
+            }
+            {
+              name: 'ConnectionStrings__redis'
+              value: 'redis-vnsxt6qwqbeks-dev.redis.cache.windows.net'
+            }
+            {
+              name: 'ASPNETCORE_ENVIRONMENT'
+              value: 'Development'
+            }
+          ]
         }
       ]
       scale: {

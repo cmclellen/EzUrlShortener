@@ -8,7 +8,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Ez.UrlShorte
 
 builder.AddServiceDefaults();
 
-builder.AddRedisDistributedCache("redis");
+//builder.AddRedisDistributedCache("redis");
 builder.AddSqlServerDbContext<UrlShortenerDbContext>(connectionName: "url-shortener-db");
 
 // Add services to the container.
@@ -26,9 +26,9 @@ builder.Services.Scan(scan => scan
     .AsMatchingInterface()
     .WithTransientLifetime());
 
-#pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-builder.Services.AddHybridCache();
-#pragma warning restore EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+//#pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+//builder.Services.AddHybridCache();
+//#pragma warning restore EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 var app = builder.Build();
 
@@ -52,8 +52,12 @@ app.UseHttpsRedirection();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<UrlShortenerDbContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     var db = dbContext.Database;
-    db.EnsureDeleted();
+    Console.WriteLine("Connected to " + db.GetConnectionString());
+    logger.LogInformation("Connected to {ConnectionString}", db.GetConnectionString());
+    
+    //db.EnsureDeleted();
     db.Migrate();
 }
 

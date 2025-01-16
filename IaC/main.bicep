@@ -9,8 +9,8 @@ param location string = resourceGroup().location
 ])
 param environment string
 param scPricipalId string
-// param sqlAdminSid string
-// param sqlAdminLogin string
+param sqlAdminSid string
+param sqlAdminLogin string
 
 var uniqueResourceGroupName = uniqueString(resourceGroup().id)
 
@@ -33,16 +33,16 @@ module storage_account 'modules/web.bicep' = {
   }
 }
 
-// module database 'modules/database.bicep' = {
-//   name: 'database'
-//   params: {
-//     location: location
-//     uniqueResourceGroupName: uniqueResourceGroupName
-//     environment: environment
-//     sqlAdminSid: sqlAdminSid
-//     sqlAdminLogin: sqlAdminLogin
-//   }
-// }
+module database 'modules/database.bicep' = {
+  name: 'database'
+  params: {
+    location: location
+    uniqueResourceGroupName: uniqueResourceGroupName
+    environment: environment
+    sqlAdminSid: sqlAdminSid
+    sqlAdminLogin: sqlAdminLogin
+  }
+}
 
 // module cache 'modules/cache.bicep' = {
 //   name: 'cache'

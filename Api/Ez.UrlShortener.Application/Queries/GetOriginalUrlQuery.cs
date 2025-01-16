@@ -9,7 +9,7 @@ namespace Ez.UrlShortener.Application.Queries
     public record GetOriginalUrlQuery(string shortCode):IRequest<string?>;
 
     public class GetOriginalUrlQueryHandler(
-        HybridCache hybridCache,
+        //HybridCache hybridCache,
         IShortenedUrlRepository shortenedUrlRepository) : IRequestHandler<GetOriginalUrlQuery, string?>
     {
         private static readonly Counter<int> RedirectsCounter = AppMeters.ApiMeter.CreateCounter<int>("url_shortener.redirects", "Number of redirects");
@@ -17,13 +17,15 @@ namespace Ez.UrlShortener.Application.Queries
 
         public async Task<string?> Handle(GetOriginalUrlQuery request, CancellationToken cancellationToken)
         {
-            var originalUrl = await hybridCache.GetOrCreateAsync(request.shortCode, async token =>
-            {
-                var originalUrl =  await shortenedUrlRepository.GetByShortCodeAsync(request.shortCode);
-                return originalUrl?.OriginalUrl;
-            });
+            //var originalUrl = await hybridCache.GetOrCreateAsync(request.shortCode, async token =>
+            //{
+            //    var originalUrl =  await shortenedUrlRepository.GetByShortCodeAsync(request.shortCode);
+            //    return originalUrl?.OriginalUrl;
+            //});
 
-            if(originalUrl is null)
+            var shortenedUrl = await shortenedUrlRepository.GetByShortCodeAsync(request.shortCode);
+            var originalUrl = shortenedUrl?.OriginalUrl;
+            if (originalUrl is null)
             {
                 FailedRedirectsCounter.Add(1, new KeyValuePair<string, object?>("short_code", request.shortCode));
             }
