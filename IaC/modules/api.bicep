@@ -70,6 +70,10 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
               name: 'ConnectionStrings__redis'
               value: 'redis-vnsxt6qwqbeks-dev.redis.cache.windows.net'
             }
+            {
+              name: 'ASPNETCORE_ENVIRONMENT'
+              value: 'Development'
+            }
           ]
         }
       ]
