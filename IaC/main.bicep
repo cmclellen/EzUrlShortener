@@ -61,3 +61,11 @@ module api 'modules/api.bicep' = {
     environment: environment
   }
 }
+
+module frontdoor 'modules/frontdoor.bicep' = {
+  name: 'frontdoor'
+  params: {
+    uniqueResourceGroupName: uniqueResourceGroupName
+    environment: environment
+  }
+}
