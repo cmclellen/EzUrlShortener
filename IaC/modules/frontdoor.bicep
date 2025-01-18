@@ -53,9 +53,14 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
         patternsToMatch: [
           '/*'
         ]
-        forwardingProtocol: 'HttpsOnly'
+        forwardingProtocol: 'MatchRequest'
         linkToDefaultDomain: 'Enabled'
         httpsRedirect: 'Enabled'
+        ruleSets: [
+          {
+            id: frontDoorProfile::rule.id
+          }
+        ]
       }
     }
   }
