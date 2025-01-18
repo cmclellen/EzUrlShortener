@@ -18,6 +18,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
     resource rules 'rules' = {
       name: 'uirule'
       properties: {
+        matchProcessingBehavior: 'Stop'
         actions: [
           {
             name: 'UrlRewrite'
