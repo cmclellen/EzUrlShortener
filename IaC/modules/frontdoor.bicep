@@ -12,6 +12,9 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
   sku: {
     name: frontDoorSkuName
   }
+  properties: {
+    originResponseTimeoutSeconds: 60
+  }
 
   resource rule 'ruleSets' = {
     name: 'uiruleset'
@@ -73,6 +76,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
       loadBalancingSettings: {
         sampleSize: 4
         successfulSamplesRequired: 3
+        additionalLatencyInMilliseconds: 50
       }
       healthProbeSettings: {
         probePath: '/'
