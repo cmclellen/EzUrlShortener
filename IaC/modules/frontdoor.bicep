@@ -14,9 +14,9 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
   }
 
   resource rule 'ruleSets' = {
-    name: 'ui-rulesets'
-    resource Identifier 'rules' = {
-      name: 'ui-rules'
+    name: 'uiruleset'
+    resource rules 'rules' = {
+      name: 'uirule'
       properties: {
         actions: [
           {
@@ -41,7 +41,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
     }
 
     resource frontDoorRoute 'routes' = {
-      name: 'ui-route'
+      name: 'uiroute'
       properties: {
         originGroup: {
           id: uiFrontDoorOriginGroup.id
@@ -61,7 +61,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
   }
 
   resource uiFrontDoorOriginGroup 'originGroups' = {
-    name: 'ui'
+    name: 'uiorigingroup'
     properties: {
       loadBalancingSettings: {
         sampleSize: 4
@@ -76,7 +76,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
     }
 
     resource uiFrontDoorOrigin 'origins' = {
-      name: 'ui-origin'
+      name: 'uiorigin'
       properties: {
         hostName: 'stvnsxt6qwqbeksdev.z8.web.core.${az.environment().suffixes.storage}'
         httpPort: 80
