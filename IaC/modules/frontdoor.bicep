@@ -89,7 +89,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
     resource uiFrontDoorOrigin 'origins' = {
       name: 'uiorigin'
       properties: {
-        hostName: 'stvnsxt6qwqbeksdev.z8.web.core.${az.environment().suffixes.storage}'
+        hostName: 'stvnsxt6qwqbeksdev.z8.web.${az.environment().suffixes.storage}'
         httpPort: 80
         httpsPort: 443
         originHostHeader: 'stvnsxt6qwqbeksdev.z8.web.${az.environment().suffixes.storage}'
