@@ -5,6 +5,7 @@ param environment string
   'Premium_AzureFrontDoor'
 ])
 param frontDoorSkuName string = 'Standard_AzureFrontDoor'
+param uiHostname string = 'stvnsxt6qwqbeksdev.z8.web.${az.environment().suffixes.storage}'
 
 resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
   name: 'afd-${uniqueResourceGroupName}-${environment}'
@@ -89,10 +90,10 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
     resource uiFrontDoorOrigin 'origins' = {
       name: 'uiorigin'
       properties: {
-        hostName: 'stvnsxt6qwqbeksdev.z8.web.${az.environment().suffixes.storage}'
+        hostName: uiHostname
         httpPort: 80
         httpsPort: 443
-        originHostHeader: 'stvnsxt6qwqbeksdev.z8.web.${az.environment().suffixes.storage}'
+        originHostHeader: uiHostname
         priority: 1
         weight: 1000
       }
