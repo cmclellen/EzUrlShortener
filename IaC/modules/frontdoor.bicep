@@ -23,6 +23,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
     resource rules 'rules' = {
       name: 'uirule'
       properties: {
+        order: 100
         matchProcessingBehavior: 'Stop'
         actions: [
           {
@@ -62,6 +63,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
         forwardingProtocol: 'MatchRequest'
         linkToDefaultDomain: 'Enabled'
         httpsRedirect: 'Enabled'
+        enabledState: 'Enabled'
         originPath: '/'
         ruleSets: [
           {
@@ -88,6 +90,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
         forwardingProtocol: 'MatchRequest'
         linkToDefaultDomain: 'Enabled'
         httpsRedirect: 'Enabled'
+        enabledState: 'Enabled'
       }
     }
   }
@@ -95,6 +98,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
   resource uiFrontDoorOriginGroup 'originGroups' = {
     name: 'uiorigingroup'
     properties: {
+      sessionAffinityState: 'Disabled'
       loadBalancingSettings: {
         sampleSize: 4
         successfulSamplesRequired: 3
@@ -118,6 +122,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
         priority: 1
         weight: 1000
         enabledState: 'Enabled'
+        enforceCertificateNameCheck: true
       }
     }
   }
@@ -125,6 +130,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
   resource apiFrontDoorOriginGroup 'originGroups' = {
     name: 'apiorigingroup'
     properties: {
+      sessionAffinityState: 'Disabled'
       loadBalancingSettings: {
         sampleSize: 4
         successfulSamplesRequired: 3
@@ -148,6 +154,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
         priority: 1
         weight: 1000
         enabledState: 'Enabled'
+        enforceCertificateNameCheck: true
       }
     }
   }
