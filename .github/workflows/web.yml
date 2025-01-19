@@ -5,6 +5,7 @@ on:
     paths:
       - "UI/**"
       - ".github/workflows/web.yml"
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
