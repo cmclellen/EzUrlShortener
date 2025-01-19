@@ -2,7 +2,6 @@
 param location string = resourceGroup().location
 param uniqueResourceGroupName string
 param environment string
-param containerImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: 'logs-${uniqueResourceGroupName}-${environment}'
@@ -56,7 +55,6 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
       containers: [
         {
           name: containerAppName
-          image: containerImage
           resources: {
             cpu: json(cpuCore)
             memory: '${memorySize}Gi'
