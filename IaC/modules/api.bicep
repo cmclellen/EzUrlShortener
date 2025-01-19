@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 param uniqueResourceGroupName string
 param environment string
-param containerImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+param containerImage string = 'ghcr.io/cmclellen/ezurlshortener:latest'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: 'logs-${uniqueResourceGroupName}-${environment}'
