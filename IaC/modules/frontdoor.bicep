@@ -25,6 +25,19 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
       properties: {
         order: 100
         matchProcessingBehavior: 'Stop'
+        conditions: [
+          {
+            name: 'UrlPath'
+            parameters: {
+              operator: 'BeginsWith'
+              typeName: 'DeliveryRuleUrlPathMatchConditionParameters'
+              negateCondition: true
+              matchValues: [
+                '/assets/'
+              ]
+            }
+          }
+        ]
         actions: [
           {
             name: 'UrlRewrite'
