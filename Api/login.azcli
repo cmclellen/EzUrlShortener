@@ -1,0 +1,2 @@
+az login --tenant dca5775e-99b4-497c-90c1-c8e73396999e
+az account set --subscription 7bc8f609-efb0-4078-8e94-461c8c3df7ea

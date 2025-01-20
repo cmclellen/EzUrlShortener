@@ -67,8 +67,8 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
               value: 'Server=tcp:sql-vnsxt6qwqbeks-dev${az.environment().suffixes.sqlServerHostname},1433;Initial Catalog=sqldb-vnsxt6qwqbeks-dev;TrustServerCertificate=True;Connection Timeout=30;Authentication="Active Directory Default";'
             }
             {
-              name: 'ConnectionStrings__redis'
-              value: 'redis-vnsxt6qwqbeks-dev.redis.cache.windows.net'
+              name: 'ConnectionStrings__azcache'
+              value: 'redis-vnsxt6qwqbeks-dev.redis.cache.windows.net:6380'
             }
             {
               name: 'ASPNETCORE_ENVIRONMENT'
