@@ -1,6 +1,9 @@
+using Azure.Identity;
 using Ez.UrlShortener.Api.Extensions;
 using Ez.UrlShortener.Application.Persistence;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
+using StackExchange.Redis.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +11,23 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Ez.UrlShorte
 
 builder.AddServiceDefaults();
 
-//builder.AddRedisDistributedCache("redis");
+var azureOptionsProvider = new AzureOptionsProvider();
+var connString = builder.Configuration.GetConnectionString("azcache");
+var configurationOptions = ConfigurationOptions.Parse(
+    connString ??
+    throw new InvalidOperationException("Could not find a 'azcache' connection string."));
+
+if (configurationOptions.EndPoints.Any(azureOptionsProvider.IsMatch))
+{
+    await configurationOptions.ConfigureForAzureWithTokenCredentialAsync(
+        new DefaultAzureCredential());
+}
+builder.AddRedisDistributedCache("azcache", configureOptions: options =>
+{
+    options.Defaults = configurationOptions.Defaults;
+});
 builder.AddSqlServerDbContext<UrlShortenerDbContext>(connectionName: "url-shortener-db");
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services
     .AddOpenApi()
     .ConfigureJsonOptionsEx()
@@ -26,9 +41,9 @@ builder.Services.Scan(scan => scan
     .AsMatchingInterface()
     .WithTransientLifetime());
 
-//#pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-//builder.Services.AddHybridCache();
-//#pragma warning restore EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+builder.Services.AddHybridCache();
+#pragma warning restore EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 var app = builder.Build();
 
