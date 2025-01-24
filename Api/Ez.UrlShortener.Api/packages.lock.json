@@ -65,6 +65,19 @@
           "StackExchange.Redis": "2.8.16"
         }
       },
+      "Azure.Monitor.OpenTelemetry.AspNetCore": {
+        "type": "Direct",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "DQuzRMHuleTDxLg6hGjJAy2IsvPspT+DeM+gpDIhBe2CG/FWqH5+zUxs7/LbCh7yXB8/bOEj4+Z+/H5ABCy1Kg==",
+        "dependencies": {
+          "Azure.Core": "1.40.0",
+          "Azure.Monitor.OpenTelemetry.Exporter": "1.3.0",
+          "OpenTelemetry.Extensions.Hosting": "1.8.1",
+          "OpenTelemetry.Instrumentation.AspNetCore": "1.8.1",
+          "OpenTelemetry.Instrumentation.Http": "1.8.1"
+        }
+      },
       "Carter": {
         "type": "Direct",
         "requested": "[9.0.0, )",
@@ -1176,19 +1189,6 @@
         "requested": "[5.0.0, )",
         "resolved": "5.0.0",
         "contentHash": "jVPRvLw0xIUFto2cMrKgRYADWIHbEEfzZHGiU/swwNgl1zo28Q1zfSa3VUC3C0s9DyhFDPSaF4dEDQRyTZUcyQ=="
-      },
-      "Azure.Monitor.OpenTelemetry.AspNetCore": {
-        "type": "CentralTransitive",
-        "requested": "[1.2.0, )",
-        "resolved": "1.2.0",
-        "contentHash": "DQuzRMHuleTDxLg6hGjJAy2IsvPspT+DeM+gpDIhBe2CG/FWqH5+zUxs7/LbCh7yXB8/bOEj4+Z+/H5ABCy1Kg==",
-        "dependencies": {
-          "Azure.Core": "1.40.0",
-          "Azure.Monitor.OpenTelemetry.Exporter": "1.3.0",
-          "OpenTelemetry.Extensions.Hosting": "1.8.1",
-          "OpenTelemetry.Instrumentation.AspNetCore": "1.8.1",
-          "OpenTelemetry.Instrumentation.Http": "1.8.1"
-        }
       },
       "Microsoft.EntityFrameworkCore": {
         "type": "CentralTransitive",
