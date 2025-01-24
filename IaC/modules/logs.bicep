@@ -13,4 +13,13 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   }
 }
 
+resource insight 'Microsoft.Insights/components@2020-02-02' = {
+  name: 'appi-${uniqueResourceGroupName}-${environment}'
+  location: location
+  properties: {
+    Application_Type: 'web'
+  }
+  kind: 'web'
+}
+
 output logAnalyticsId string = logAnalytics.id
