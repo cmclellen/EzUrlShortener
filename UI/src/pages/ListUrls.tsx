@@ -6,6 +6,7 @@ import useDeleteShortenedUrl from "../features/shortenUrl/useDeleteShortenedUrl"
 import Spinner from "../ui/Spinner";
 import Modal, { useModal } from "../ui/Modal";
 import ConfirmDelete from "../ui/ConfirmDelete";
+import { useCallback } from "react";
 
 function ListUrls() {
   const { closeModal } = useModal();
@@ -13,13 +14,13 @@ function ListUrls() {
   const { deleteShortenedUrl, isDeletingShortenedUrl } =
     useDeleteShortenedUrl();
 
-  function handleDeleteShortCode(shortCode: string) {
+  const handleDeleteShortCode = useCallback((shortCode: string) => {
     deleteShortenedUrl(shortCode, {
       onSuccess: () => {
         closeModal();
       },
     });
-  }
+  }, []);
 
   if (isLoadingUrls || isDeletingShortenedUrl) return <Spinner />;
 
@@ -50,12 +51,14 @@ function ListUrls() {
                     >
                       {item.shortCode}
                     </Link>
-                    <Modal.Open opensWindowName="delete-url">
+                    <Modal.Open
+                      opensWindowName={`delete-url-${item.shortCode}`}
+                    >
                       <TiTrash className="text-xl text-red-800" />
                     </Modal.Open>
-                    <Modal.Window name="delete-url">
+                    <Modal.Window name={`delete-url-${item.shortCode}`}>
                       <ConfirmDelete
-                        resourceName="URL"
+                        resourceName={`URL`}
                         onDelete={() => handleDeleteShortCode(item.shortCode)}
                       />
                     </Modal.Window>
