@@ -71,10 +71,10 @@ using (var scope = app.Services.CreateScope())
     var db = dbContext.Database;
     Console.WriteLine("Connected to " + db.GetConnectionString());
     logger.LogInformation("Connected to {ConnectionString}", db.GetConnectionString());
-    if (app.Environment.IsDevelopment())
-    {
-        db.EnsureDeleted();
-    }
+    //if (app.Environment.IsDevelopment())
+    //{
+    //    db.EnsureDeleted();
+    //}
     db.Migrate();
 }
 
