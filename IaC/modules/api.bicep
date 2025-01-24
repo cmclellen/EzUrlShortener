@@ -12,6 +12,10 @@ resource appinsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: 'appi-${uniqueResourceGroupName}-${environment}'
 }
 
+resource redisCache 'Microsoft.Cache/redis@2024-11-01' existing = {
+  name: 'redis-${uniqueResourceGroupName}-${environment}'
+}
+
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-10-02-preview' = {
   name: 'cae-${uniqueResourceGroupName}-${environment}'
   location: location
@@ -98,6 +102,16 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
         maxReplicas: 1
       }
     }
+  }
+}
+
+resource redisCacheBuiltInAccessPolicyAssignment 'Microsoft.Cache/redis/accessPolicyAssignments@2024-11-01' = {
+  name: 'builtInAccessPolicyAssignment-${uniqueString(resourceGroup().id)}'
+  parent: redisCache
+  properties: {
+    accessPolicyName: 'Data Reader'
+    objectId: containerApp.identity.principalId
+    objectIdAlias: containerAppEnv.name
   }
 }
 
