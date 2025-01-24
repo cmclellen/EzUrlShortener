@@ -3,6 +3,14 @@ param location string = resourceGroup().location
 param uniqueResourceGroupName string
 param environment string
 
+param builtInAccessPolicyAssignmentName string = 'builtInAccessPolicyAssignment-${uniqueString(resourceGroup().id)}'
+param builtInAccessPolicyAssignmentObjectId string = newGuid()
+param builtInAccessPolicyAssignmentObjectAlias string = 'builtInAccessPolicyApplication-${uniqueString(resourceGroup().id)}'
+param customAccessPolicyName string = 'customAccessPolicy-${uniqueString(resourceGroup().id)}'
+param customAccessPolicyAssignmentName string = 'customAccessPolicyAssignment-${uniqueString(resourceGroup().id)}'
+param customAccessPolicyAssignmentObjectId string = newGuid()
+param customAccessPolicyAssignmentObjectAlias string = 'customAccessPolicyApplication-${uniqueString(resourceGroup().id)}'
+
 resource redisCache 'Microsoft.Cache/redis@2023-08-01' = {
   name: 'redis-${uniqueResourceGroupName}-${environment}'
   location: location
@@ -18,38 +26,35 @@ resource redisCache 'Microsoft.Cache/redis@2023-08-01' = {
       'aad-enabled': 'true'
     }
   }
+
+  resource redisCacheBuiltInAccessPolicyAssignment 'accessPolicyAssignments' = {
+    name: builtInAccessPolicyAssignmentName
+    properties: {
+      accessPolicyName: 'Data Reader'
+      objectId: builtInAccessPolicyAssignmentObjectId
+      objectIdAlias: builtInAccessPolicyAssignmentObjectAlias
+    }
+  }
+
+  resource redisCacheCustomAccessPolicy 'accessPolicies' = {
+    name: customAccessPolicyName
+    properties: {
+      permissions: '+@connection +get +hget allkeys'
+    }
+    dependsOn: [
+      redisCacheBuiltInAccessPolicyAssignment
+    ]
+  }
+
+  resource redisCacheCustomAccessPolicyAssignment 'accessPolicyAssignments' = {
+    name: customAccessPolicyAssignmentName
+    properties: {
+      accessPolicyName: customAccessPolicyName
+      objectId: customAccessPolicyAssignmentObjectId
+      objectIdAlias: customAccessPolicyAssignmentObjectAlias
+    }
+    dependsOn: [
+      redisCacheCustomAccessPolicy
+    ]
+  }
 }
-
-// resource redisCacheBuiltInAccessPolicyAssignment 'Microsoft.Cache/redis/accessPolicyAssignments@2023-08-01' = {
-//   name: builtInAccessPolicyAssignmentName
-//   parent: redisCache
-//   properties: {
-//     accessPolicyName: builtInAccessPolicyName
-//     objectId: builtInAccessPolicyAssignmentObjectId
-//     objectIdAlias: builtInAccessPolicyAssignmentObjectAlias
-//   }
-// }
-
-// resource redisCacheCustomAccessPolicy 'Microsoft.Cache/redis/accessPolicies@2023-08-01' = {
-//   name: customAccessPolicyName
-//   parent: redisCache
-//   properties: {
-//     permissions: customAccessPolicyPermissions
-//   }
-//   dependsOn: [
-//     redisCacheBuiltInAccessPolicyAssignment
-//   ]
-// }
-
-// resource redisCacheCustomAccessPolicyAssignment 'Microsoft.Cache/redis/accessPolicyAssignments@2023-08-01' = {
-//   name: customAccessPolicyAssignmentName
-//   parent: redisCache
-//   properties: {
-//     accessPolicyName: customAccessPolicyName
-//     objectId: customAccessPolicyAssignmentObjectId
-//     objectIdAlias: customAccessPolicyAssignmentObjectAlias
-//   }
-//   dependsOn: [
-//     redisCacheCustomAccessPolicy
-//   ]
-// }
