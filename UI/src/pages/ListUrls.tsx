@@ -58,7 +58,7 @@ function ListUrls() {
                     </Modal.Open>
                     <Modal.Window name={`delete-url-${item.shortCode}`}>
                       <ConfirmDelete
-                        resourceName={`URL "${item.shortCode}"`}
+                        resourceName={`URL`}
                         onDelete={() => handleDeleteShortCode(item.shortCode)}
                       />
                     </Modal.Window>
