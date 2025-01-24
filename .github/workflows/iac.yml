@@ -32,7 +32,7 @@ jobs:
           sparse-checkout: |
             IaC/
 
-      - name: Env variables
+      - name: Print variables
         run: |
           echo "Repository name: $GITHUB_REPOSITORY"
           echo "Branch name: $GITHUB_REF"
