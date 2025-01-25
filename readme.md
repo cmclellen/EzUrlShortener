@@ -4,7 +4,7 @@
 
 I wanted to try out Aspire, so created this experiment of a URL shortener service fronted by a React SPA.
 
-## UI walkthough
+## UI walkthrough
 
 A user is able to navigate to the site and add URL's to shorten via the `add-url` route shown below. The screenshot shows the instant that the URL was successfully added.
 
