@@ -19,37 +19,3 @@ resource redisCache 'Microsoft.Cache/redis@2023-08-01' = {
     }
   }
 }
-
-// resource redisCacheBuiltInAccessPolicyAssignment 'Microsoft.Cache/redis/accessPolicyAssignments@2023-08-01' = {
-//   name: builtInAccessPolicyAssignmentName
-//   parent: redisCache
-//   properties: {
-//     accessPolicyName: builtInAccessPolicyName
-//     objectId: builtInAccessPolicyAssignmentObjectId
-//     objectIdAlias: builtInAccessPolicyAssignmentObjectAlias
-//   }
-// }
-
-// resource redisCacheCustomAccessPolicy 'Microsoft.Cache/redis/accessPolicies@2023-08-01' = {
-//   name: customAccessPolicyName
-//   parent: redisCache
-//   properties: {
-//     permissions: customAccessPolicyPermissions
-//   }
-//   dependsOn: [
-//     redisCacheBuiltInAccessPolicyAssignment
-//   ]
-// }
-
-// resource redisCacheCustomAccessPolicyAssignment 'Microsoft.Cache/redis/accessPolicyAssignments@2023-08-01' = {
-//   name: customAccessPolicyAssignmentName
-//   parent: redisCache
-//   properties: {
-//     accessPolicyName: customAccessPolicyName
-//     objectId: customAccessPolicyAssignmentObjectId
-//     objectIdAlias: customAccessPolicyAssignmentObjectAlias
-//   }
-//   dependsOn: [
-//     redisCacheCustomAccessPolicy
-//   ]
-// }

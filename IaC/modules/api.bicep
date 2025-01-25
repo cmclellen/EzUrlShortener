@@ -8,18 +8,34 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' exis
   name: 'logs-${uniqueResourceGroupName}-${environment}'
 }
 
-resource containerAppEnv 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
+resource appinsights 'Microsoft.Insights/components@2020-02-02' existing = {
+  name: 'appi-${uniqueResourceGroupName}-${environment}'
+}
+
+resource redisCache 'Microsoft.Cache/redis@2024-11-01' existing = {
+  name: 'redis-${uniqueResourceGroupName}-${environment}'
+}
+
+resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-10-02-preview' = {
   name: 'cae-${uniqueResourceGroupName}-${environment}'
   location: location
-  sku: {
-    name: 'Consumption'
-  }
   properties: {
+    appInsightsConfiguration: {
+      connectionString: appinsights.properties.ConnectionString
+    }
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
         customerId: logAnalytics.properties.customerId
         sharedKey: logAnalytics.listKeys().primarySharedKey
+      }
+    }
+    openTelemetryConfiguration: {
+      tracesConfiguration: {
+        destinations: ['appInsights']
+      }
+      logsConfiguration: {
+        destinations: ['appInsights']
       }
     }
   }
@@ -74,6 +90,10 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
               name: 'ASPNETCORE_ENVIRONMENT'
               value: 'Development'
             }
+            {
+              name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+              value: appinsights.properties.ConnectionString
+            }
           ]
         }
       ]
@@ -82,6 +102,16 @@ resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
         maxReplicas: 1
       }
     }
+  }
+}
+
+resource redisCacheBuiltInAccessPolicyAssignment 'Microsoft.Cache/redis/accessPolicyAssignments@2024-11-01' = {
+  name: 'builtInAccessPolicyAssignment-${uniqueString(resourceGroup().id)}'
+  parent: redisCache
+  properties: {
+    accessPolicyName: 'Data Reader'
+    objectId: containerApp.identity.principalId
+    objectIdAlias: containerAppEnv.name
   }
 }
 
